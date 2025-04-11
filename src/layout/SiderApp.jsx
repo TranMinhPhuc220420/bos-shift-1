@@ -1,4 +1,4 @@
-import React, { } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from "react-router";
 
 // Redux
@@ -28,6 +28,7 @@ const SiderApp = ({ isLoading }) => {
   const collapsed = useSelector((state) => state.app.collapsedSider);
 
   // State
+  const [keySelected, setKeySelected] = React.useState(false);
 
   // Classes - clsx
   const classes = {
@@ -46,7 +47,6 @@ const SiderApp = ({ isLoading }) => {
     const { key, item } = event;
     const { pathname } = item.props;
 
-    console.log(key, pathname);
     if (key && pathname) {
       navigate(pathname);
     }
@@ -74,6 +74,37 @@ const SiderApp = ({ isLoading }) => {
     ]),
   ];
 
+  useEffect(() => {
+    const path = window.location.pathname;
+    
+    // Check if path is in items
+    let item;
+    for (let i = 0; i < items.length; i++) {
+      const element = items[i];
+      if (element.pathname === path) {
+        item = element;
+        break;
+      } else if (element.children) {
+        const child = element.children.find(child => child.pathname === path);
+        if (child) {
+          item = child;
+          break;
+        }
+      }
+    }
+    
+    // Set selected key based on path
+    if (item) {
+      setKeySelected(item.key);
+    } else {
+      // Default to first item
+      setKeySelected(items[0].key);
+    }
+    
+  }, []);
+
+  if (!keySelected) return <></>;
+
   return (
     <div>
       {/* Logo */}
@@ -84,7 +115,7 @@ const SiderApp = ({ isLoading }) => {
       {/* Sider */}
       <Sider collapsed={collapsed} className={classes.wrapMenu} width={220} style={{ backgroundColor: '#fff' }}>
         {!isLoading &&
-          <Menu defaultSelectedKeys={['1']} mode="inline" items={items} onSelect={handlerOnSelectMenuItem} />
+          <Menu defaultSelectedKeys={[keySelected]} mode="inline" items={items} onSelect={handlerOnSelectMenuItem} />
         }
       </Sider>
     </div>

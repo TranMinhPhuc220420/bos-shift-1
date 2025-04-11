@@ -49,7 +49,12 @@ function AuthProvider({ children }) {
           payload: { isAuthenticated: true, user },
         });
 
-        navigate("/dashboard", { replace: true });
+        // Check if page active is login page
+        const path = window.location.pathname;
+        const isLoginPage = path.includes("/dang-nhap");
+        if (isLoginPage) {
+          navigate("/dashboard", { replace: true });
+        }
 
       } else {
         navigate("/dang-nhap", { replace: true });
