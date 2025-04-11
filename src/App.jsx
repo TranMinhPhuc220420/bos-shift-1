@@ -1,12 +1,8 @@
-import { Button } from 'antd';
+import LayoutApp from './layout';
 
-function App() {
-
+const App = () => {
   return (
-    <>
-      <Button type="primary">Button</Button>
-    </>
-  )
-}
-
-export default App
+    <LayoutApp />
+  );
+};
+export default App;
