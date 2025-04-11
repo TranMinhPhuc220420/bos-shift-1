@@ -1,0 +1,9 @@
+.page-login {
+  height: 100vh;
+  width: 100%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(https://image.bosgauruscoffee.com/1920x0/products/background8png-34976ec71a5e4dc8.webp);
+  background-size: cover;
+  background-position: left center;
+  background-repeat: no-repeat;
+  position: relative;
+}
