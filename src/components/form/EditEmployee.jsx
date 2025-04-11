@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next";
 
 // Antd design
+import { SaveOutlined, CloseOutlined } from "@ant-design/icons";
 import { Button, Input } from "antd";
 
 // Firebase
@@ -24,6 +25,12 @@ const EditEmployee = ({ employeeId, employeeEdit, onOK, onFail, onCancel }) => {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    
+    // Convert string to number
+    data.salary = parseFloat(data.salary);
+    data.branch = parseInt(data.branch);
+    data.position = parseInt(data.position);
+    data.level = parseInt(data.level);
 
     // Add employee to database
     let isSuccess = await updateEmployee(employeeId, data);
@@ -136,11 +143,11 @@ const EditEmployee = ({ employeeId, employeeEdit, onOK, onFail, onCancel }) => {
         </div>
 
         <div className="flex justify-end px-4">
-          <Button type="default" className="mr-2" onClick={handlerCancel} disabled={isLoading}>
+          <Button type="default" danger className="mr-2" onClick={handlerCancel} disabled={isLoading} icon={<CloseOutlined />}>
             {t('TXT_CANCEL')}
           </Button>
-          <Button type="primary" onClick={handleSubmit(onSubmit)} loading={isLoading} disabled={isLoading}>
-            {t('TXT_ADD')}
+          <Button type="primary" onClick={handleSubmit(onSubmit)} loading={isLoading} disabled={isLoading} icon={<SaveOutlined />}>
+            {t('TXT_SAVE')}
           </Button>
         </div>
 

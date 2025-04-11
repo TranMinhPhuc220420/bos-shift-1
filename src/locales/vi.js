@@ -14,6 +14,7 @@ const VIETNAMESE_TRANSLATIONS = {
     'TXT_ADD_NEW': 'Thêm mới',
     'TXT_EDIT': 'Chỉnh sửa',
     'TXT_DELETE': 'Xóa',
+    'TXT_DELETE_SELECTED': 'Xóa đã chọn',
     'TXT_VIEW': 'Xem',
     'TXT_SAVE': 'Lưu',
     'TXT_CANCEL': 'Hủy',
@@ -38,9 +39,11 @@ const VIETNAMESE_TRANSLATIONS = {
     'TITLE_ADD_EMPLOYEE': 'Thêm nhân viên',
     'TITLE_EDIT_EMPLOYEE': 'Chỉnh sửa nhân viên',
     'TITLE_CONFIRM_DELETE': 'Xác nhận xóa',
+    'TITLE_CONFIRM_DELETE_SELECTED': 'Xác nhận xóa đã chọn',
 
     // Confirmation messages
     'CONFIRM_DELETE_EMPLOYEE': 'Bạn có chắc chắn muốn xóa nhân viên này không?',
+    'CONFIRM_DELETE_EMPLOYEES_SELECTED': 'Bạn có chắc chắn muốn xóa những nhân viên đã chọn không?',
 
     // Error messages
     'MSG_ERROR_REQUIRED': 'Trường này là bắt buộc',
@@ -49,11 +52,14 @@ const VIETNAMESE_TRANSLATIONS = {
     'MSG_ERROR_UPDATE_EMPLOYEE': 'Cập nhật nhân viên không thành công',
     'MSG_ERROR_DELETE_EMPLOYEE': 'Xóa nhân viên không thành công',
     'MSG_ERROR_EMPLOYEE_NOT_FOUND': 'Nhân viên không tồn tại',
+    'MSG_ERROR_NO_FILE_SELECTED': 'Không có tệp nào được chọn',
+    'MSG_ERROR_FILE_TYPE': 'Tệp không hợp lệ. Vui lòng chọn tệp Excel hoặc CSV',
 
     // Success messages
     'MSG_SUCCESS_ADD_EMPLOYEE': 'Thêm nhân viên thành công',
     'MSG_SUCCESS_UPDATE_EMPLOYEE': 'Cập nhật nhân viên thành công',
     'MSG_SUCCESS_DELETE_EMPLOYEE': 'Xóa nhân viên thành công',
+    'MSG_SUCCESS_DELETE_EMPLOYEES_SELECTED': 'Xóa nhân viên đã chọn thành công',
   }
 };
 

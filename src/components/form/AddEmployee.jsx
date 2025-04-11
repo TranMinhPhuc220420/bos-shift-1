@@ -26,6 +26,12 @@ const AddEmployee = ({ onOK, onFail, onCancel }) => {
   const onSubmit = async (data) => {
     setIsLoading(true);
 
+    // Convert string to number
+    data.salary = parseFloat(data.salary);
+    data.branch = parseInt(data.branch);
+    data.position = parseInt(data.position);
+    data.level = parseInt(data.level);
+
     // Add employee to database
     let isSuccess = await addEmployee(data);
 

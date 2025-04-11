@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+
+import * as XLSX from 'xlsx';
 
 import { useTranslation } from "react-i18next";
 
 // Firebase
-import { getEmployeeList, deleteEmployee } from "../../../database";
+import { getEmployeeList, deleteEmployee, addEmployee } from "../../../database";
 
 import { PlusOutlined, FileExcelOutlined, TeamOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { Breadcrumb, Button, Modal, message, Table, Space, Popconfirm } from "antd";
@@ -14,17 +16,26 @@ import AddEmployeeForm from "../../../components/form/AddEmployee";
 import EditEmployeeForm from "../../../components/form/EditEmployee";
 
 const ManagerEmployee = () => {
+  // Ref
+  const inputRef = useRef(null);
+
   // Translation
   const { t } = useTranslation();
 
   // State
+  const [height, setHeight] = useState(window.innerHeight - 300);
   const [employeeList, setEmployeeList] = useState([]);
   const [employeeListLoading, setEmployeeListLoading] = useState(true);
   const [idEmployeeDeleting, setIdEmployeeDeleting] = useState(null);
   const [idEmployeeEditing, setIdEmployeeEditing] = useState(null);
 
+  const [isDeletingLoading, setIsDeletingLoading] = useState(false);
+  const [isAddingByExcelLoading, setIsAddingByExcelLoading] = useState(false);
+
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [employeeEdit, setEmployeeEdit] = useState(null);
+
+  const [employeeSelected, setEmployeeSelected] = useState([]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
@@ -57,6 +68,18 @@ const ManagerEmployee = () => {
       key: 'salary',
     },
   ];
+
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+
+      setEmployeeSelected(selectedRows);
+    },
+    getCheckboxProps: record => ({
+      disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
 
   // Fetch data from firebase
   const fetchEmployeeList = async () => {
@@ -117,6 +140,40 @@ const ManagerEmployee = () => {
 
     setIdEmployeeDeleting(false);
   }
+  const handlerConfirmDeleteSelected = async () => {
+    // Call the delete function here
+    console.log("Delete employee with id: ", employeeSelected);
+    setIsDeletingLoading(true);
+    setEmployeeListLoading(true);
+
+    let countDeleted = 0;
+    const checkDone = () => {
+      countDeleted++;
+      if (countDeleted === employeeSelected.length) {
+        messageApi.open({
+          type: 'success',
+          content: t('MSG_SUCCESS_DELETE_EMPLOYEES_SELECTED'),
+          duration: 3,
+        });
+        setIsDeletingLoading(false);
+        fetchEmployeeList();
+
+        // Clear the selected employees
+        setEmployeeSelected([]);
+
+        setEmployeeListLoading(false);
+      }
+    };
+
+    employeeSelected.forEach(async (employee) => {
+      const { key } = employee;
+      setIdEmployeeDeleting(key);
+      await deleteEmployee(key);
+      checkDone();
+    });
+
+    setIdEmployeeDeleting(false);
+  };
 
   const handleEdit = (employee) => {
     // Call the edit function here
@@ -134,7 +191,7 @@ const ManagerEmployee = () => {
       content: t('MSG_SUCCESS_UPDATE_EMPLOYEE'),
       duration: 3,
     });
-    
+
     // Fetch data again
     fetchEmployeeList();
 
@@ -159,20 +216,129 @@ const ManagerEmployee = () => {
     setIdEmployeeEditing(false);
   };
 
+  const handleAddByExcel = () => {
+    // Open the file input dialog
+    inputRef.current.click();
+  };
+  const handlerOnChangeFile = (e) => {
+    const file = e.target.files[0];
+
+    // Check if the file is selected
+    if (!file) {
+      messageApi.open({
+        type: 'error',
+        content: t('MSG_ERROR_NO_FILE_SELECTED'),
+        duration: 3,
+      });
+      return;
+    }
+    // Check if the file is a valid Excel or CSV file
+    const validFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+    if (!validFileTypes.includes(file.type)) {
+      messageApi.open({
+        type: 'error',
+        content: t('MSG_ERROR_FILE_TYPE'),
+        duration: 3,
+      });
+      return;
+    }
+
+    setIsAddingByExcelLoading(true);
+
+    // Read the file and convert it to JSON
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const data = new Uint8Array(evt.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+
+      const json = XLSX.utils.sheet_to_json(worksheet, {
+        header: ['ten', 'chi_nhanh', 'chuc_vu', 'cap_bac', 'luong'],
+        range: 1, // skip the first row if it has actual headers
+      });
+
+      // Check each item in the JSON array make sure it has all the required fields
+      const requiredFields = ['ten', 'chi_nhanh', 'chuc_vu', 'cap_bac', 'luong'];
+      const isValid = json.every(item => {
+        return requiredFields.every(field => {
+          return item[field] !== null && item[field] !== undefined && item[field] !== '';
+        });
+      });
+      if (!isValid) {
+        messageApi.open({
+          type: 'error',
+          content: t('MSG_ERROR_FILE_TYPE'),
+          duration: 3,
+        });
+        setIsAddingByExcelLoading(false);
+        // Clear the input file
+        inputRef.current.value = null;
+        return;
+      }
+
+      let countAdded = 0;
+      const checkDone = () => {
+        countAdded++;
+        if (countAdded === json.length) {
+          messageApi.open({
+            type: 'success',
+            content: t('MSG_SUCCESS_ADD_EMPLOYEE'),
+            duration: 3,
+          });
+
+          setIsAddingByExcelLoading(false);
+          fetchEmployeeList();
+
+          // Clear the input file
+          inputRef.current.value = null;
+        }
+      };
+
+      json.forEach(async (item) => {
+        let data = {
+          name: item.ten,
+          branch: item.chi_nhanh,
+          position: item.chuc_vu,
+          level: item.cap_bac,
+          salary: item.luong,
+        }
+
+        // Call the add function here
+        await addEmployee(data);
+
+        checkDone();
+      });
+    };
+
+    reader.readAsArrayBuffer(file);
+  }
+
   // Effect
   useEffect(() => {
     // Fetch data here
     fetchEmployeeList();
+
+    // Set the height of the table
+    const handleResize = () => {
+      setHeight(window.innerHeight - 300);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (
-    <div className="px-4 py-4 w-full">
+    <div className="px-4 pt-4 pb-10 w-full">
 
       <div className="mb-2">
         <Breadcrumb items={[{ title: t('TXT_EMPLOYEE') }, { title: t('TXT_MANAGER') }]} />
       </div>
 
-      <div className="w-full bg-white p-2 rounded-md shadow-sm">
+      <div className="w-full bg-white p-2 rounded-md shadow-sm overflow-auto">
         {/* Toolbar top */}
         <div className="flex align-items-center justify-between mb-4">
           {/* Left */}
@@ -182,18 +348,44 @@ const ManagerEmployee = () => {
           </div>
           {/* Right */}
           <div className="flex align-items-center">
-            <Button type="primary" icon={<PlusOutlined />} className="ml-2" onClick={showModal}>
+
+            {employeeSelected && employeeSelected.length > 0 && (
+              <Popconfirm
+                placement="bottomRight"
+                title={t('TITLE_CONFIRM_DELETE_SELECTED')}
+                description={t('CONFIRM_DELETE_EMPLOYEES_SELECTED')}
+                onConfirm={handlerConfirmDeleteSelected}
+                okText={t('TXT_CONFIRM')}
+                cancelText={t('TXT_CANCEL')}
+              >
+                <Button type="primary" danger icon={<DeleteOutlined />} className="ml-2"
+                  disabled={isDeletingLoading || isAddingByExcelLoading}
+                  loading={isDeletingLoading}
+                >
+                  {t('TXT_DELETE_SELECTED')}
+                </Button>
+              </Popconfirm>
+            )}
+
+            <Button type="primary" icon={<PlusOutlined />} className="ml-2" onClick={showModal}
+              disabled={isAddingByExcelLoading || isDeletingLoading}
+            >
               {t('TXT_ADD_NEW')}
             </Button>
 
-            <Button type="primary" icon={<FileExcelOutlined />} className="ml-2">
+            <Button type="primary" icon={<FileExcelOutlined />} className="ml-2" onClick={handleAddByExcel}
+              loading={isAddingByExcelLoading} disabled={isAddingByExcelLoading || isDeletingLoading}
+            >
               {t('TXT_ADD_BY_EXCEL')}
             </Button>
           </div>
         </div>
 
         {/* Table */}
-        <Table dataSource={employeeList} loading={employeeListLoading}>
+        <Table dataSource={employeeList} loading={employeeListLoading}
+          scroll={{ y: height, x: true }}
+          rowSelection={Object.assign({ type: 'checkbox' }, rowSelection)}
+        >
           {columns.map((column) => (
             <Column
               title={column.title}
@@ -233,10 +425,10 @@ const ManagerEmployee = () => {
 
         {/* Modal */}
         {contextHolder}
-        <Modal title={t('TITLE_ADD_EMPLOYEE')} open={isModalOpen} footer={false}>
+        <Modal title={t('TITLE_ADD_EMPLOYEE')} open={isModalOpen} footer={false} onCancel={handleCancel} >
           {isModalOpen && <AddEmployeeForm onCancel={handleCancel} onOK={handleOk} onFail={handlerOnFail} />}
         </Modal>
-        <Modal title={t('TITLE_EDIT_EMPLOYEE')} open={isModalEditOpen} footer={false}>
+        <Modal title={t('TITLE_EDIT_EMPLOYEE')} open={isModalEditOpen} footer={false} onCancel={handleEditCancel}>
           {employeeEdit && <EditEmployeeForm employeeId={employeeEdit.key} employeeEdit={employeeEdit}
             onCancel={handleEditCancel}
             onOK={handleEditOk}
@@ -244,8 +436,12 @@ const ManagerEmployee = () => {
           />}
         </Modal>
 
-        {/* Test */}
+        {/* Input update file csv or excel */}
+        <input type="file" ref={inputRef} hidden
+          accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          onChange={handlerOnChangeFile} />
 
+        {/* Test */}
 
       </div>
     </div>

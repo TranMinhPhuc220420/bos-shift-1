@@ -9,18 +9,25 @@ export const generateId = () => {
 }
 
 export const getNamePosition = (position) => {
+  position = position.toString();
+
+
   // Get the name of the position from the POSITION_LIST
   const positionObj = POSITION_LIST.find(item => item.id === position);
   return positionObj ? positionObj.name : null;
 };
 
 export const getNameBranch = (branch) => {
+  branch = branch.toString();
+
   // Get the name of the branch from the BRANCH_LIST
   const branchObj = BRANCH_LIST.find(item => item.id === branch);
   return branchObj ? branchObj.name : null;
 };
 
 export const getNameLevel = (level) => {
+  level = level.toString();
+  
   // Get the name of the level from the EMPLOYEE_LEVEL
   return EMPLOYEE_LEVEL[level] || null;
 };
