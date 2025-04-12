@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router";
 import LayoutApp from "./layout";
 
 import DashboardPage from "./pages/DashboardPage";
+import RevenueManagerPage from "./pages/revenue/manager";
 import ReportPage from "./pages/ReportPage";
 
 import ManagerEmployeePage from "./pages/employee/manager";
@@ -21,6 +22,9 @@ const RouterApp = () => {
         <Route index element={<DashboardPage />} />
         <Route path="/" element={<DashboardPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+
+        {/* Revenue page */}
+        <Route path="/doanh-thu" element={<RevenueManagerPage />} />
 
         {/* Report page */}
         <Route path="/bao-cao" element={<ReportPage />} />

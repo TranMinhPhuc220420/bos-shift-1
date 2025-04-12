@@ -11,6 +11,8 @@ import { PlusOutlined, FileExcelOutlined, TeamOutlined, DeleteOutlined, EditOutl
 import { Breadcrumb, Button, Modal, message, Table, Space, Popconfirm } from "antd";
 const { Column, ColumnGroup } = Table;
 
+import { BRANCH_LIST } from "../../../constant";
+
 // Components
 import AddEmployeeForm from "../../../components/form/AddEmployee";
 import EditEmployeeForm from "../../../components/form/EditEmployee";
@@ -51,6 +53,11 @@ const ManagerEmployee = () => {
       title: t('LABEL_BRANCH'),
       dataIndex: 'branch_display',
       key: 'branch',
+      onFilter: (value, record) => record.branch_display.startsWith(value),
+      filters: BRANCH_LIST.map((branch) => ({
+        text: branch.name,
+        value: branch.name,
+      })),
     },
     {
       title: t('LABEL_POSITION'),
@@ -391,6 +398,8 @@ const ManagerEmployee = () => {
               title={column.title}
               dataIndex={column.dataIndex}
               key={column.key}
+              filters={column.filters}
+              onFilter={column.onFilter}
             />
           ))}
           <Column title="Action" key="action" render={(_, record) => (

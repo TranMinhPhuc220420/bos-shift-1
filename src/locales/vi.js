@@ -1,6 +1,7 @@
 const VIETNAMESE_TRANSLATIONS = {
   translation: {
     'TXT_REPORT': 'Báo cáo',
+    'TXT_REVENUE': 'Doanh thu',
     'TXT_EMPLOYEE': 'Nhân viên',
     'TXT_MANAGER': 'Quản lý nhân viên',
     'TXT_SKILL_CATEGORIZATION': 'Phân loại kỹ năng',
@@ -26,7 +27,12 @@ const VIETNAMESE_TRANSLATIONS = {
     'TXT_FILTER': 'Lọc',
     'TXT_ADD_BY_EXCEL': 'Thêm bằng Excel',
     'TXT_ADD_BY_CSV': 'Thêm bằng CSV',
+
+    // Employee management
     'TXT_EMPLOYEE_LIST': 'Danh sách nhân viên',
+
+    // Revenue management
+    'TXT_REVENUE_LIST': 'Danh sách doanh thu',
 
     'TXT_EMPLOYEE_ID': 'Mã nhân viên',
     'LABEL_NAME': 'Tên',
