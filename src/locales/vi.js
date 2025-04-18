@@ -1,6 +1,6 @@
 const VIETNAMESE_TRANSLATIONS = {
   translation: {
-    'TXT_REPORT': 'Báo cáo',
+    'TXT_REPORT': 'Báo cáo xyz',
     'TXT_REVENUE': 'Doanh thu',
     'TXT_EMPLOYEE': 'Nhân viên',
     'TXT_MANAGER': 'Quản lý nhân viên',
