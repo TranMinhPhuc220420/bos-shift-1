@@ -32,7 +32,7 @@ const VIETNAMESE_TRANSLATIONS = {
     'TXT_EMPLOYEE_LIST': 'Danh sách nhân viên',
 
     // Revenue management
-    'TXT_REVENUE_LIST': 'Danh sách doanh thu',
+    'TXT_REVENUE_LIST': 'Danh sách doanh thu của khách',
 
     'TXT_EMPLOYEE_ID': 'Mã nhân viên',
     'LABEL_NAME': 'Tên',
