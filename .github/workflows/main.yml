@@ -84,12 +84,12 @@ jobs:
       - name: Build application
         run: npm run build
         
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-files
-          path: build/
-          retention-days: 1
+      # - name: Upload build artifacts
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: build-files
+      #     path: build/
+      #     retention-days: 1
 
   deploy-preview:
     name: Deploy Preview
