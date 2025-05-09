@@ -37,7 +37,7 @@ const LoginPage = () => {
           </div>
           {/* Title and description */}
           <h1 className="text-2xl font-bold">
-            BOS.Shift
+            BOS.Shift Edit
           </h1>
           <p className="text-gray-600 mb-6">
             Bosgaurus Coffee Roasters
