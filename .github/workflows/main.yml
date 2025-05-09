@@ -1,8 +1,10 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]  # Đảm bảo deploy khi merge vào main
 
 jobs:
   build:
@@ -27,3 +29,20 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && success()  # Chỉ deploy khi test pass và là nhánh main
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
