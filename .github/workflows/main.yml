@@ -32,7 +32,7 @@ jobs:
 
   deploy:
     needs: build
-    if: github.ref == 'refs/heads/main' && success()  # Chỉ deploy khi test pass và là nhánh main
+    if: github.ref == 'refs/heads/main' && success()
     runs-on: ubuntu-latest
 
     steps:
@@ -45,4 +45,7 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
+          vercel-args: '--prod --confirm'
+        env:
+          VERCEL_ENV: production
+
