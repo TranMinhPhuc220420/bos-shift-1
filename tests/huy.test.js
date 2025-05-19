@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { bubbleSort, getNameLevel, getNamePosition } from '../src/utils.js'
+import { bubbleSort, getNameLevel, getNamePosition } from '../src/utils'
 
 test('Test bubble sort', () => {
   let arrSort = [9, 13, 19, 38, 250]
