@@ -5,7 +5,7 @@ const VIETNAMESE_TRANSLATIONS = {
     'TXT_REVENUE': 'Doanh thu',
     'TXT_EMPLOYEE': 'Danh mục quản lý',
     'TXT_MANAGER': 'Quản lý nhân viên',
-    'TXT_SKILL_CATEGORIZATION': 'Phân loại kỹ năng',
+    'TXT_SKILL_CATEGORIZATION': 'Danh sách cấp bậc',
     'TXT_TRACK_WORK_HOURS': 'Theo giỏi giờ làm việc',
     'TXT_SHIFT_OPTIMIZATION': 'Tối ưu hóa ca',
     'TXT_SHIFT_SCHEDULING': 'Sắp xếp ca làm việc',
