@@ -2,9 +2,9 @@
 export const EMPLOYEE_COLLECTION = "employees";
 
 export const EMPLOYEE_LEVEL = {
-  "1": "Intern",
-  "2": "Junior",
-  "3": "Middle",
+  "1": "Thực tập sinh",
+  "2": "Nhân viên sơ cấp",
+  "3": "Nhân viên trung cấp",
 };
 
 export const POSITION_LIST = [
