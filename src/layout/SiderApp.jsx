@@ -54,7 +54,7 @@ const SiderApp = ({ isLoading }) => {
 
   // Menu items
   const items = [
-    getItem(t('Dashboard'), '/dashboard', '1', <HomeOutlined />),
+    getItem(t('TXT_DASHBOARD'), '/dashboard', '1', <HomeOutlined />),
     getItem(t('TXT_REPORT'), '/bao-cao', '2', <BarChartOutlined />),
     getItem(t('TXT_REVENUE'), '/doanh-thu', '10', <AuditOutlined />),
 

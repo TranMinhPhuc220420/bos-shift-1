@@ -1,5 +1,6 @@
 const VIETNAMESE_TRANSLATIONS = {
   translation: {
+    'TXT_DASHBOARD': 'Trang chủ',
     'TXT_REPORT': 'Báo cáo',
     'TXT_REVENUE': 'Doanh thu',
     'TXT_EMPLOYEE': 'Danh mục quản lý',
