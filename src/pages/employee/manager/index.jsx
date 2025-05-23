@@ -402,7 +402,7 @@ const ManagerEmployee = () => {
               onFilter={column.onFilter}
             />
           ))}
-          <Column title="Action" key="action" render={(_, record) => (
+          <Column title="Hành động" key="action" render={(_, record) => (
             <Space size="middle">
               <Button type="primary" icon={<EditOutlined />}
                 onClick={() => handleEdit(record)}
