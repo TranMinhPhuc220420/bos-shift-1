@@ -43,7 +43,7 @@ const SiderApp = ({ isLoading }) => {
   // Constants
   const items = [
     {
-      label: (<span>Logout</span>),
+      label: (<span>Đăng Xuất</span>),
       key: '0',
       onClick: handlerOnSelectMenuItem,
     },
