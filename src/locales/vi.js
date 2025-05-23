@@ -2,7 +2,7 @@ const VIETNAMESE_TRANSLATIONS = {
   translation: {
     'TXT_REPORT': 'Báo cáo abc',
     'TXT_REVENUE': 'Doanh thu',
-    'TXT_EMPLOYEE': 'Nhân viên',
+    'TXT_EMPLOYEE': 'Danh mục quản lý',
     'TXT_MANAGER': 'Quản lý nhân viên',
     'TXT_SKILL_CATEGORIZATION': 'Phân loại kỹ năng',
     'TXT_TRACK_WORK_HOURS': 'Theo giỏi giờ làm việc',
