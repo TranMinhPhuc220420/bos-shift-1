@@ -110,7 +110,7 @@ const SiderApp = ({ isLoading }) => {
     <div>
       {/* Logo */}
       <div className={classes.wrapLogo}>
-        <img src="/favicon.ico" className={classes.logo} />
+        <img src="/beericon.ico" className={classes.logo} />
       </div>
 
       {/* Sider */}
