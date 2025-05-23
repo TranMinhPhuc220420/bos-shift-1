@@ -14,7 +14,7 @@ test('Test get name positon', () => {
 })
 
 test('Test get name employee', () => {
-  expect(getNameLevel(1)).toBe('Intern')
-  expect(getNameLevel(2)).toBe('Junior')
-  expect(getNameLevel(3)).toBe('Middle')
+  expect(getNameLevel(1)).toBe('Thực tập sinh')
+  expect(getNameLevel(2)).toBe('Nhân viên sơ cấp')
+  expect(getNameLevel(3)).toBe('Nhân viên trung cấp')
 })
