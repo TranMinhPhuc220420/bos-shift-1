@@ -15,6 +15,6 @@ export const POSITION_LIST = [
 ];
 
 export const BRANCH_LIST = [
-  { id: "1", name: "SaiGon Pearl" },
-  { id: "2", name: "TOH" },
+  { id: "1", name: "SaiGon" },
+  { id: "2", name: "HaNoi" },
 ];

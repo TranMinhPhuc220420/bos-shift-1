@@ -3,8 +3,8 @@ import { getNameBranch } from '../src/utils.js';
 
 describe('getNameBranch', () => {
   test('returns correct branch name', () => {
-    expect(getNameBranch(1)).toBe("SaiGon Pearl");
-    expect(getNameBranch("2")).toBe("TOH");
+    expect(getNameBranch(1)).toBe("SaiGon");
+    expect(getNameBranch("2")).toBe("HaNoi");
   });
 
   test('returns null for unknown branch', () => {
